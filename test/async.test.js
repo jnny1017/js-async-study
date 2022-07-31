@@ -1,4 +1,3 @@
-const fs = require("fs");
 const { readFile } = require("../src/readFile");
 
 describe("async/await - readFile함수를 async/await 만 사용하여 테스트 통과하기", () => {

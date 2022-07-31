@@ -1,4 +1,3 @@
-const fs = require("fs");
 const { readFile } = require("../src/readFile");
 
 describe("Promise - fs.readFile를 프로미스 패턴만 사용", () => {
