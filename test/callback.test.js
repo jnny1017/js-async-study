@@ -33,9 +33,9 @@ describe("Callback - fs.readFile를 콜백 패턴만 사용", () => {
             }
 
             const secondData = JSON.parse(data); // second.json
-            const result = secondData.filter((item) => item.key === secondKey);
+            const result = secondData.find((item) => item.key === secondKey);
 
-            expect(result[0].hi).toBe("Second 방가방가");
+            expect(result.hi).toBe("Second 방가방가");
 
             done();
         });

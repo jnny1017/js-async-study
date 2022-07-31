@@ -26,9 +26,9 @@ describe("Promise - fs.readFile를 프로미스 패턴만 사용", () => {
 
             readFile("assets/second.json").then((data) => {
                 const secondData = JSON.parse(data); // second.json
-                const secondResult = secondData.filter((item) => item.key === secondKey);
+                const secondResult = secondData.find((item) => item.key === secondKey);
 
-                expect(secondResult[0].hi).toBe("Second 방가방가");
+                expect(secondResult.hi).toBe("Second 방가방가");
 
                 done();
             });
@@ -42,14 +42,14 @@ describe("Promise - fs.readFile를 프로미스 패턴만 사용", () => {
 
             readFile("assets/second.json").then((data) => {
                 const secondData = JSON.parse(data); // second.json
-                const secondResult = secondData.filter((item) => item.key === secondKey);
+                const secondResult = secondData.find((item) => item.key === secondKey);
 
                 readFile("assets/third.json").then((data) => {
                     const thirdData = JSON.parse(data);
-                    const thirdKey = secondResult[0].third_key // second.json에서 불러온 third_key
-                    const thirdResult = thirdData.filter((item) => item.key === thirdKey);
+                    const thirdKey = secondResult.third_key // second.json에서 불러온 third_key
+                    const thirdResult = thirdData.find((item) => item.key === thirdKey);
 
-                    expect(thirdResult[0].hi).toBe("Third 방가방가");
+                    expect(thirdResult.hi).toBe("Third 방가방가");
 
                     done();
                 });
