@@ -1,26 +1,59 @@
-const fs = require("fs");
 const { readFile } = require("../src/readFile");
 
 describe("Promise - fs.readFile를 프로미스 패턴만 사용", () => {
-  test("fs.readFile을 이용해 Promise를 반환하는 readFile 함수 만들기", (done) => {
-    const promise = readFile("assets/first");
-    expect(promise instanceof Promise).toBe(true);
-  });
+    test("fs.readFile을 이용해 Promise를 반환하는 readFile 함수 만들기", (done) => {
+        const promise = readFile("assets/first.json");
 
-  test("assets/first.json을 불러오기", (done) => {
-    readFile("assets/first").then((data) => {
-      const first = JSON.parse(data);
-      expect(first.hi).toBe("방가방가");
-      done();
+        expect(promise instanceof Promise).toBe(true);
+
+        done();
     });
-  });
 
-  test("assets/first.json에서 불러온 second_key를 이용해 second.json에서 key에 일치하는 오브젝트 찾기", () => {
-    const result = "테스트 코드 작성하기";
-    expect(result).toBe("Second 방가방가");
-  });
-  test("assets/second.json에서 불러온 third_key를 이용해 third.json에서 key에 일치하는 오브젝트 찾기", () => {
-    const result = "테스트 코드 작성하기";
-    expect(result).toBe("Third 방가방가");
-  });
+    test("assets/first.json을 불러오기", (done) => {
+        readFile("assets/first.json").then((data) => {
+            const first = JSON.parse(data);
+
+            expect(first.hi).toBe("방가방가");
+
+            done();
+        });
+    });
+
+    test("assets/first.json에서 불러온 second_key를 이용해 second.json에서 key에 일치하는 오브젝트 찾기", (done) => {
+        readFile("assets/first.json").then((data) => {
+            const firstData = JSON.parse(data);
+            const secondKey = firstData.second_key; // first.json에서 불러온 second_key (1)
+
+            readFile("assets/second.json").then((data) => {
+                const secondData = JSON.parse(data); // second.json
+                const secondResult = secondData.find((item) => item.key === secondKey);
+
+                expect(secondResult.hi).toBe("Second 방가방가");
+
+                done();
+            });
+        });
+    });
+
+    test("assets/second.json에서 불러온 third_key를 이용해 third.json에서 key에 일치하는 오브젝트 찾기", (done) => {
+        readFile("assets/first.json").then((data) => {
+            const firstData = JSON.parse(data);
+            const secondKey = firstData.second_key; // first.json에서 불러온 second_key (1)
+
+            readFile("assets/second.json").then((data) => {
+                const secondData = JSON.parse(data); // second.json
+                const secondResult = secondData.find((item) => item.key === secondKey);
+
+                readFile("assets/third.json").then((data) => {
+                    const thirdData = JSON.parse(data);
+                    const thirdKey = secondResult.third_key // second.json에서 불러온 third_key
+                    const thirdResult = thirdData.find((item) => item.key === thirdKey);
+
+                    expect(thirdResult.hi).toBe("Third 방가방가");
+
+                    done();
+                });
+            });
+        });
+    });
 });
